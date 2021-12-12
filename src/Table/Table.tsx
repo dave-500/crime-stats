@@ -1,13 +1,14 @@
+import { useMemo } from "react";
 import MUTable from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Column, useTable, useFilters } from "react-table";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import { Column, useTable, useFilters, useSortBy } from "react-table";
 import { CrimeCol } from "../shared/crime.interface";
 import DefaultFilter from "./DefaultFilter";
 import DateFilter from "./DateFilter";
-import { useMemo } from "react";
 
 interface Props {
   result: { isLoading: boolean; data: CrimeCol[]; error: Error | null };
@@ -36,7 +37,8 @@ const Table = ({ result, columns, setDate }: Props) => {
         defaultColumn,
         autoResetFilters: false,
       },
-      useFilters
+      useFilters,
+      useSortBy
     );
 
   return (
@@ -45,7 +47,15 @@ const Table = ({ result, columns, setDate }: Props) => {
         {headerGroups.map((headerGroup) => (
           <TableRow {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <TableCell>{column.render("Header")}</TableCell>
+              <TableCell
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+              >
+                {column.render("Header")}
+                <TableSortLabel
+                  active={column.isSorted}
+                  direction={column.isSortedDesc ? "desc" : "asc"}
+                />
+              </TableCell>
             ))}
           </TableRow>
         ))}
