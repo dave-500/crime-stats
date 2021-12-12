@@ -3,8 +3,11 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Column, useTable } from "react-table";
+import { Column, useTable, useFilters } from "react-table";
 import { CrimeCol } from "../shared/crime.interface";
+import DefaultFilter from "./DefaultFilter";
+import DateFilter from "./DateFilter";
+import { useMemo } from "react";
 
 interface Props {
   result: { isLoading: boolean; data: CrimeCol[]; error: Error | null };
@@ -20,10 +23,21 @@ export interface OutcomeDialogState {
 const Table = ({ result, columns, setDate }: Props) => {
   const { data, error } = result;
 
-  const { getTableProps, headerGroups, prepareRow, rows } = useTable({
-    columns,
-    data,
-  });
+  const defaultColumn: Partial<Column<CrimeCol>> = useMemo(
+    () => ({ Filter: DefaultFilter }),
+    []
+  );
+
+  const { getTableProps, headerGroups, prepareRow, rows, filteredRows } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+        autoResetFilters: false,
+      },
+      useFilters
+    );
 
   return (
     <MUTable {...getTableProps()} size="small">
@@ -31,13 +45,24 @@ const Table = ({ result, columns, setDate }: Props) => {
         {headerGroups.map((headerGroup) => (
           <TableRow {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
+              <TableCell>{column.render("Header")}</TableCell>
+            ))}
+          </TableRow>
+        ))}
+        {headerGroups.map((headerGroup) => (
+          <TableRow {...headerGroup.getHeaderGroupProps()} key="filters">
+            {headerGroup.headers.map((column) => (
               <TableCell {...column.getHeaderProps()}>
-                {column.render("Header")}
+                {column.canFilter ? column.render("Filter") : null}
+                {column.id === "month" ? (
+                  <DateFilter setDate={setDate} />
+                ) : null}
               </TableCell>
             ))}
           </TableRow>
         ))}
       </TableHead>
+
       <TableBody>
         {error ? error.message : null}
         {rows.map((row) => {

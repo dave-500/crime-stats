@@ -3,6 +3,7 @@ import { Column } from "react-table";
 import useGetAllCrimes from "./hooks/useCrimes";
 import { CrimeCol } from "./shared/crime.interface";
 import Table from "./Table/Table";
+import SelectFilter from "./Table/SelectFilter";
 
 interface Props {}
 
@@ -12,6 +13,8 @@ const Home = (props: Props) => {
       {
         Header: "Landmark",
         accessor: "landmark",
+        Filter: SelectFilter,
+        filter: "equals",
       },
       {
         Header: "Category",
@@ -30,6 +33,7 @@ const Home = (props: Props) => {
       {
         Header: "Month",
         accessor: "month",
+        disableFilters: true,
       },
     ],
     []
