@@ -9,6 +9,7 @@ import { Column, useTable, useFilters, useSortBy } from "react-table";
 import { CrimeCol } from "../shared/crime.interface";
 import DefaultFilter from "./DefaultFilter";
 import DateFilter from "./DateFilter";
+import SkeletonRow from "./SkeletonRow";
 
 interface Props {
   result: { isLoading: boolean; data: CrimeCol[]; error: Error | null };
@@ -22,7 +23,7 @@ export interface OutcomeDialogState {
 }
 
 const Table = ({ result, columns, setDate }: Props) => {
-  const { data, error } = result;
+  const { data, error, isLoading } = result;
 
   const defaultColumn: Partial<Column<CrimeCol>> = useMemo(
     () => ({ Filter: DefaultFilter }),
@@ -75,20 +76,24 @@ const Table = ({ result, columns, setDate }: Props) => {
 
       <TableBody>
         {error ? error.message : null}
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <TableRow {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return (
-                  <TableCell {...cell.getCellProps()}>
-                    {cell.render("Cell")}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          );
-        })}
+        {isLoading ? (
+          <SkeletonRow rows={20} columns={columns} />
+        ) : (
+          rows.map((row) => {
+            prepareRow(row);
+            return (
+              <TableRow {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <TableCell {...cell.getCellProps()}>
+                      {cell.render("Cell")}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })
+        )}
       </TableBody>
     </MUTable>
   );
