@@ -1,41 +1,28 @@
-import { useState } from "react";
+import React from "react";
+import Container from "@mui/material/Container";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { QueryClient, QueryClientProvider } from "react-query";
+import useAxiosConfig from "./hooks/useAxiosConfig";
+import CssBaseline from "@mui/material/CssBaseline";
+import Home from "./Home";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { staleTime: 60 * 1000, refetchOnWindowFocus: false },
+  },
+});
 
 function App() {
-  const [count, setCount] = useState(0);
+  useAxiosConfig();
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {" | "}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <Home />
+      </Container>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 
