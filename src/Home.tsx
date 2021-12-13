@@ -39,7 +39,7 @@ const Home = (props: Props) => {
     []
   );
 
-  const [date, setDate] = useState<string | undefined>();
+  const [date, setDate] = useState<string | null>(null);
 
   const result = useGetAllCrimes(date);
 

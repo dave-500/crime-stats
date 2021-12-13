@@ -26,7 +26,7 @@ export const LANDMARKS: Landmark[] = [
   { lat: 51.503399, lng: -0.119519, name: "London Eye" },
 ];
 
-type Params = { lat: number; lng: number; date?: string };
+type Params = { lat: number; lng: number; date: string | null };
 const CRIMES_QUERY_KEY = "crimes";
 
 const getCrimes = async (params: Params, landmark: string) => {
@@ -40,7 +40,7 @@ const getCrimes = async (params: Params, landmark: string) => {
   return added;
 };
 
-const getAllCrimes = async (date?: string) => {
+const getAllCrimes = async (date: string | null) => {
   const data = await Promise.all(
     LANDMARKS.map((l) => getCrimes({ lat: l.lat, lng: l.lng, date }, l.name))
   );
@@ -48,7 +48,7 @@ const getAllCrimes = async (date?: string) => {
   return data.flat();
 };
 
-const useGetAllCrimes = (date?: string) => {
+const useGetAllCrimes = (date: string | null) => {
   const crimes = useQuery<CrimeCol[], Error>([CRIMES_QUERY_KEY, date], () =>
     getAllCrimes(date)
   );

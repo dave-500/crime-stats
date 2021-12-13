@@ -24,7 +24,7 @@ import { SetStateAction, useState, useMemo } from "react";
 interface Props {
   result: { isLoading: boolean; data: CrimeCol[]; error: Error | null };
   columns: Column<CrimeCol>[];
-  setDate: React.Dispatch<SetStateAction<string | undefined>>;
+  setDate: React.Dispatch<SetStateAction<string | null>>;
 }
 
 export interface OutcomeDialogState {

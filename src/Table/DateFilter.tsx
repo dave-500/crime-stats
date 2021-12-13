@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 
 interface Props {
-  setDate: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setDate: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const DateFilter = ({ setDate }: Props) => {
@@ -16,8 +16,7 @@ const DateFilter = ({ setDate }: Props) => {
       variant="standard"
       size="small"
       onChange={(e) => {
-        // column.setFilter(e.target.value || undefined);
-        setDate(e.target.value);
+        setDate(e.target.value || null);
       }}
     />
   );
