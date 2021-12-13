@@ -1,4 +1,3 @@
-import React from "react";
 import Container from "@mui/material/Container";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
