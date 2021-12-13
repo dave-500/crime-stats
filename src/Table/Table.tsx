@@ -135,17 +135,19 @@ const Table = ({ result, columns, setDate }: Props) => {
         </TableBody>
 
         <TableFooter>
-          <TablePagination
-            count={filteredRows.length}
-            rowsPerPage={state.pageSize}
-            page={state.pageIndex}
-            SelectProps={{ native: true }}
-            onPageChange={(_, page) => gotoPage(page)}
-            onRowsPerPageChange={(e) => {
-              setPageSize(parseInt(e.target.value, 10));
-              gotoPage(0);
-            }}
-          />
+          <TableRow>
+            <TablePagination
+              count={filteredRows.length}
+              rowsPerPage={state.pageSize}
+              page={state.pageIndex}
+              SelectProps={{ native: true }}
+              onPageChange={(_, page) => gotoPage(page)}
+              onRowsPerPageChange={(e) => {
+                setPageSize(parseInt(e.target.value, 10));
+                gotoPage(0);
+              }}
+            />
+          </TableRow>
         </TableFooter>
       </MUTable>
       <OutcomeDialog
