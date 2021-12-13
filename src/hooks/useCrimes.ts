@@ -22,6 +22,8 @@ export const LANDMARKS: Landmark[] = [
     lng: -0.076132,
     name: "Tower of London",
   },
+  { lat: 51.51387, lng: -0.098362, name: "St. Paul's Cathedral" },
+  { lat: 51.503399, lng: -0.119519, name: "London Eye" },
 ];
 
 type Params = { lat: number; lng: number; date?: string };
